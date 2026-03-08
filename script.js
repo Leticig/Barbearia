@@ -322,6 +322,7 @@ function abrirModal(servicoPreSelecionado = null) {
     
     // Reseta o formulário
     resetarFormulario();
+    atualizarHorarios();
     
     // Pré-seleciona serviço se fornecido
     if (servicoPreSelecionado) {
