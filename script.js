@@ -281,11 +281,10 @@ function initModalAgendamento() {
     }
     
     // Atualiza horários ao selecionar data
-const dataInput = document.getElementById('dataAgendamento');
-if (dataInput) {
-    dataInput.addEventListener('change', atualizarHorarios);
-    dataInput.addEventListener('input', atualizarHorarios);
-}
+    const dataInput = document.getElementById('dataAgendamento');
+    if (dataInput) {
+        dataInput.addEventListener('change', atualizarHorarios);
+    }
     
     // Submit do formulário
     if (form) {
@@ -323,7 +322,6 @@ function abrirModal(servicoPreSelecionado = null) {
     
     // Reseta o formulário
     resetarFormulario();
-    atualizarHorarios(); // garante que horários apareçam
     
     // Pré-seleciona serviço se fornecido
     if (servicoPreSelecionado) {
@@ -580,20 +578,17 @@ function gerarHorarios() {
 }
 
 function selecionarHorario(horario, btn) {
-
+    // Remove seleção anterior
     document.querySelectorAll('.horario-btn').forEach(b => {
         b.classList.remove('selecionado');
     });
-
+    
+    // Seleciona novo
     btn.classList.add('selecionado');
-
     const horarioInput = document.getElementById('horarioSelecionado');
-
     if (horarioInput) {
         horarioInput.value = horario;
     }
-
-    console.log("Horário selecionado:", horario);
 }
 
 function getAgendamentosPorData(data) {
@@ -1046,12 +1041,559 @@ function throttle(func, limit) {
     };
 }
 
+// ============================================
+// SCRIPT DO WHATSAPP - ENVIO DE CONFIRMAÇÃO
+// ============================================
+
+/**
+ * Envia mensagem de confirmação via WhatsApp
+ * @param {Object} agendamento - Dados do agendamento
+ */
+function enviarWhatsAppConfirmacao(agendamento) {
+    const numeroWhatsApp = '5511999999999'; // Número da barbearia
+    
+    const dataFormatada = new Date(agendamento.data + 'T00:00:00').toLocaleDateString('pt-BR', {
+        weekday: 'long',
+        day: '2-digit',
+        month: 'long'
+    });
+    
+    const mensagem = `*🏛️ IMPÉRIO BARBER - Confirmação de Agendamento*%0A%0A` +
+        `Olá, *${agendamento.nome}*!%0A%0A` +
+        `Seu agendamento foi confirmado com sucesso! ✅%0A%0A` +
+        `📋 *Serviço:* ${agendamento.servicoNome}%0A` +
+        `📅 *Data:* ${dataFormatada}%0A` +
+        `⏰ *Horário:* ${agendamento.horario}%0A` +
+        `💰 *Valor:* R$ ${agendamento.preco.toFixed(2).replace('.', ',')}%0A%0A` +
+        `📍 *Endereço:* Rua das Barbas, 123 - Centro%0A` +
+        `📞 *Telefone:* (11) 3333-3333%0A%0A` +
+        `⚠️ *Importante:* Chegue com 10 minutos de antecedência.%0A%0A` +
+        `Agradecemos a preferência! 💈`;
+    
+    const url = `https://wa.me/${numeroWhatsApp}?text=${mensagem}`;
+    window.open(url, '_blank');
+}
+
+/**
+ * Botão WhatsApp flutuante - inicia conversa
+ */
+function initWhatsAppFlutuante() {
+    const whatsappBtn = document.querySelector('.whatsapp-float');
+    if (!whatsappBtn) return;
+    
+    whatsappBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        const numeroWhatsApp = '5511999999999';
+        const mensagem = `Olá! Vim pelo site da Império Barber e gostaria de mais informações sobre os serviços. 💈`;
+        const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+        
+        window.open(url, '_blank');
+    });
+}
+
+// ============================================
+// SCRIPT DE SELEÇÃO DE HORÁRIO
+// ============================================
+
+/**
+ * Atualiza a exibição dos horários com animação e feedback visual
+ */
+function atualizarHorarios() {
+    const data = document.getElementById('dataAgendamento').value;
+    const grid = document.getElementById('horariosGrid');
+    const horarioInput = document.getElementById('horarioSelecionado');
+    
+    if (!grid || !horarioInput) return;
+    
+    // Limpa seleção anterior
+    horarioInput.value = '';
+    
+    if (!data) {
+        grid.innerHTML = `
+            <div class="horario-vazio" style="grid-column: 1/-1; text-align: center; color: #888; padding: 30px;">
+                <i class="far fa-calendar" style="font-size: 32px; margin-bottom: 10px; display: block;"></i>
+                <p>Selecione uma data para ver os horários disponíveis</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Mostra loading
+    grid.innerHTML = `
+        <div class="horario-loading" style="grid-column: 1/-1; text-align: center; padding: 30px;">
+            <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #c9a227;"></i>
+            <p style="margin-top: 10px; color: #888;">Carregando horários...</p>
+        </div>
+    `;
+    
+    // Simula delay para mostrar loading
+    setTimeout(() => {
+        // Gera horários disponíveis
+        const horarios = gerarHorarios();
+        const agendamentosDoDia = getAgendamentosPorData(data);
+        
+        // Horários ocupados
+        const horariosOcupados = agendamentosDoDia
+            .filter(a => a.status !== 'cancelado')
+            .map(a => a.horario);
+        
+        // Renderiza botões de horário
+        grid.innerHTML = '';
+        
+        // Adiciona título da seção
+        const tituloHorarios = document.createElement('div');
+        tituloHorarios.style.cssText = 'grid-column: 1/-1; margin-bottom: 10px;';
+        tituloHorarios.innerHTML = `
+            <p style="color: #c9a227; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
+                <i class="far fa-clock"></i> Horários disponíveis para ${new Date(data + 'T00:00:00').toLocaleDateString('pt-BR')}
+            </p>
+        `;
+        grid.appendChild(tituloHorarios);
+        
+        horarios.forEach((horario, index) => {
+            const ocupado = horariosOcupados.includes(horario);
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = `horario-btn ${ocupado ? 'ocupado' : 'disponivel'}`;
+            btn.textContent = horario;
+            btn.disabled = ocupado;
+            btn.style.animationDelay = `${index * 0.03}s`;
+            
+            // Tooltip para horários ocupados
+            if (ocupado) {
+                btn.title = 'Horário já reservado';
+            } else {
+                btn.title = 'Clique para selecionar';
+            }
+            
+            if (!ocupado) {
+                btn.addEventListener('click', () => selecionarHorario(horario, btn));
+            }
+            
+            grid.appendChild(btn);
+        });
+        
+        // Adiciona animação de entrada
+        grid.querySelectorAll('.horario-btn').forEach((btn, i) => {
+            btn.style.opacity = '0';
+            btn.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                btn.style.transition = 'all 0.3s ease';
+                btn.style.opacity = '1';
+                btn.style.transform = 'translateY(0)';
+            }, i * 30);
+        });
+    }, 300);
+}
+
+/**
+ * Seleciona um horário com animação e feedback
+ */
+function selecionarHorario(horario, btn) {
+    // Remove seleção anterior
+    document.querySelectorAll('.horario-btn').forEach(b => {
+        b.classList.remove('selecionado');
+        b.innerHTML = b.textContent; // Remove ícone de check se existir
+    });
+    
+    // Adiciona classe de seleção
+    btn.classList.add('selecionado');
+    
+    // Adiciona ícone de check
+    btn.innerHTML = `<i class="fas fa-check" style="margin-right: 5px;"></i> ${horario}`;
+    
+    // Atualiza input hidden
+    const horarioInput = document.getElementById('horarioSelecionado');
+    if (horarioInput) {
+        horarioInput.value = horario;
+    }
+    
+    // Feedback visual
+    mostrarToast('Horário selecionado', `${horario} - Clique em "Próximo" para continuar`, 'info');
+    
+    // Efeito de pulso no botão
+    btn.style.animation = 'pulse 0.5s ease';
+    setTimeout(() => {
+        btn.style.animation = '';
+    }, 500);
+}
+
+// ============================================
+// SCRIPT DE CONFIRMAÇÃO DE AGENDAMENTO
+// ============================================
+
+/**
+ * Confirma o agendamento com feedback completo
+ */
+function confirmarAgendamento(e) {
+    e.preventDefault();
+    
+    // Garante que os dados do step 3 estão salvos
+    salvarDadosStep();
+    
+    const dados = state.dadosAgendamento;
+    const servicoInfo = SERVICOS[dados.servico];
+    
+    // Validações finais
+    if (!dados.nome || !dados.telefone || !dados.servico || !dados.data || !dados.horario) {
+        mostrarToast('Erro', 'Por favor, preencha todos os campos obrigatórios.', 'erro');
+        return;
+    }
+    
+    if (!servicoInfo) {
+        mostrarToast('Erro', 'Serviço inválido.', 'erro');
+        return;
+    }
+    
+    // Mostra loading no botão
+    const btnSubmit = e.target.querySelector('button[type="submit"]');
+    const btnTextoOriginal = btnSubmit ? btnSubmit.innerHTML : '';
+    if (btnSubmit) {
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+    }
+    
+    // Simula processamento
+    setTimeout(() => {
+        // Cria objeto de agendamento
+        const agendamento = {
+            id: Date.now().toString(),
+            nome: dados.nome,
+            telefone: dados.telefone,
+            email: dados.email,
+            servico: dados.servico,
+            servicoNome: servicoInfo.nome,
+            preco: servicoInfo.preco,
+            data: dados.data,
+            horario: dados.horario,
+            status: 'pendente',
+            dataCriacao: new Date().toISOString()
+        };
+        
+        // Verifica se horário ainda está disponível
+        const agendamentosDoDia = getAgendamentosPorData(dados.data);
+        const horarioOcupado = agendamentosDoDia.some(a => 
+            a.horario === dados.horario && a.status !== 'cancelado'
+        );
+        
+        if (horarioOcupado) {
+            mostrarToast('Erro', 'Este horário acabou de ser reservado. Por favor, escolha outro.', 'erro');
+            atualizarHorarios();
+            irParaStep(3);
+            if (btnSubmit) {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = btnTextoOriginal;
+            }
+            return;
+        }
+        
+        // Salva agendamento
+        state.agendamentos.push(agendamento);
+        salvarDados();
+        
+        // Fecha modal
+        fecharModal();
+        
+        // Mostra confirmação completa
+        mostrarConfirmacaoCompleta(agendamento);
+        
+        // Atualiza lista do barbeiro se estiver logado
+        if (state.barbeiroLogado) {
+            renderizarAgendamentos();
+        }
+        
+        // Restaura botão
+        if (btnSubmit) {
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = btnTextoOriginal;
+        }
+    }, 1000);
+}
+
+/**
+ * Mostra modal de confirmação completa após agendamento
+ */
+function mostrarConfirmacaoCompleta(agendamento) {
+    const dataObj = new Date(agendamento.data + 'T00:00:00');
+    const dataFormatada = dataObj.toLocaleDateString('pt-BR', {
+        weekday: 'long',
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+    });
+    
+    // Cria modal de confirmação
+    const modalConfirmacao = document.createElement('div');
+    modalConfirmacao.className = 'modal-confirmacao';
+    modalConfirmacao.innerHTML = `
+        <div class="modal-confirmacao-overlay"></div>
+        <div class="modal-confirmacao-content">
+            <div class="confirmacao-header">
+                <div class="confirmacao-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>Agendamento Confirmado!</h2>
+                <p>Seu horário foi reservado com sucesso</p>
+            </div>
+            
+            <div class="confirmacao-detalhes">
+                <div class="detalhe-item">
+                    <span class="detalhe-label"><i class="fas fa-user"></i> Cliente</span>
+                    <span class="detalhe-valor">${agendamento.nome}</span>
+                </div>
+                <div class="detalhe-item">
+                    <span class="detalhe-label"><i class="fas fa-cut"></i> Serviço</span>
+                    <span class="detalhe-valor">${agendamento.servicoNome}</span>
+                </div>
+                <div class="detalhe-item">
+                    <span class="detalhe-label"><i class="far fa-calendar"></i> Data</span>
+                    <span class="detalhe-valor">${dataFormatada}</span>
+                </div>
+                <div class="detalhe-item">
+                    <span class="detalhe-label"><i class="far fa-clock"></i> Horário</span>
+                    <span class="detalhe-valor">${agendamento.horario}</span>
+                </div>
+                <div class="detalhe-item destaque">
+                    <span class="detalhe-label"><i class="fas fa-tag"></i> Valor</span>
+                    <span class="detalhe-valor">R$ ${agendamento.preco.toFixed(2).replace('.', ',')}</span>
+                </div>
+            </div>
+            
+            <div class="confirmacao-acoes">
+                <button class="btn-whatsapp" onclick="enviarWhatsAppConfirmacao(${JSON.stringify(agendamento).replace(/"/g, '&quot;')}); this.closest('.modal-confirmacao').remove();">
+                    <i class="fab fa-whatsapp"></i>
+                    Enviar no WhatsApp
+                </button>
+                <button class="btn-fechar" onclick="this.closest('.modal-confirmacao').remove();">
+                    <i class="fas fa-times"></i>
+                    Fechar
+                </button>
+            </div>
+            
+            <div class="confirmacao-info">
+                <i class="fas fa-info-circle"></i>
+                <p>Guarde essas informações. Você também pode enviá-las pelo WhatsApp.</p>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modalConfirmacao);
+    
+    // Animação de entrada
+    setTimeout(() => {
+        modalConfirmacao.querySelector('.modal-confirmacao-content').style.transform = 'scale(1)';
+        modalConfirmacao.querySelector('.modal-confirmacao-content').style.opacity = '1';
+    }, 10);
+    
+    // Fecha ao clicar no overlay
+    modalConfirmacao.querySelector('.modal-confirmacao-overlay').addEventListener('click', () => {
+        modalConfirmacao.remove();
+    });
+    
+    // Também mostra toast
+    mostrarToast('Sucesso!', `Agendamento confirmado para ${dataFormatada} às ${agendamento.horario}`, 'sucesso');
+}
+
+// Adiciona estilos para o modal de confirmação
+const estilosConfirmacao = document.createElement('style');
+estilosConfirmacao.textContent = `
+    .modal-confirmacao {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    
+    .modal-confirmacao-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(5px);
+    }
+    
+    .modal-confirmacao-content {
+        position: relative;
+        background: #1a1a1a;
+        border-radius: 16px;
+        max-width: 450px;
+        width: 100%;
+        border: 2px solid #c9a227;
+        transform: scale(0.9);
+        opacity: 0;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+    
+    .confirmacao-header {
+        background: linear-gradient(135deg, #c9a227 0%, #9a7b1a 100%);
+        padding: 30px;
+        text-align: center;
+        color: #0a0a0a;
+    }
+    
+    .confirmacao-icon {
+        font-size: 64px;
+        margin-bottom: 15px;
+    }
+    
+    .confirmacao-header h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+    
+    .confirmacao-header p {
+        font-size: 14px;
+        opacity: 0.9;
+    }
+    
+    .confirmacao-detalhes {
+        padding: 25px 30px;
+    }
+    
+    .detalhe-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #2d2d2d;
+    }
+    
+    .detalhe-item:last-child {
+        border-bottom: none;
+    }
+    
+    .detalhe-item.destaque {
+        background: rgba(201, 162, 39, 0.1);
+        margin: 10px -15px;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #c9a227;
+    }
+    
+    .detalhe-label {
+        color: #888;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .detalhe-label i {
+        color: #c9a227;
+        width: 20px;
+    }
+    
+    .detalhe-valor {
+        color: #fff;
+        font-weight: 600;
+        text-align: right;
+    }
+    
+    .detalhe-item.destaque .detalhe-valor {
+        color: #c9a227;
+        font-size: 18px;
+    }
+    
+    .confirmacao-acoes {
+        padding: 0 30px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn-whatsapp {
+        background: #25d366;
+        color: #fff;
+        border: none;
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-whatsapp:hover {
+        background: #128c7e;
+        transform: translateY(-2px);
+    }
+    
+    .btn-fechar {
+        background: transparent;
+        color: #888;
+        border: 1px solid #2d2d2d;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-fechar:hover {
+        background: #2d2d2d;
+        color: #fff;
+    }
+    
+    .confirmacao-info {
+        background: rgba(201, 162, 39, 0.05);
+        padding: 15px 30px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #888;
+        font-size: 12px;
+    }
+    
+    .confirmacao-info i {
+        color: #c9a227;
+        font-size: 16px;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+`;
+document.head.appendChild(estilosConfirmacao);
+
+// ============================================
+// INICIALIZAÇÃO DOS NOVOS SCRIPTS
+// ============================================
+
+// Inicializa WhatsApp flutuante
+document.addEventListener('DOMContentLoaded', () => {
+    initWhatsAppFlutuante();
+});
+
 // Exporta funções para debug (opcional)
 window.ImperioBarber = {
     state,
     SERVICOS,
     CONFIG,
     mostrarToast,
+    enviarWhatsAppConfirmacao,
+    selecionarHorario,
+    confirmarAgendamento,
     getAgendamentos: () => state.agendamentos,
     limparAgendamentos: () => {
         state.agendamentos = [];
