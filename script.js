@@ -281,10 +281,11 @@ function initModalAgendamento() {
     }
     
     // Atualiza horários ao selecionar data
-    const dataInput = document.getElementById('dataAgendamento');
-    if (dataInput) {
-        dataInput.addEventListener('change', atualizarHorarios);
-    }
+const dataInput = document.getElementById('dataAgendamento');
+if (dataInput) {
+    dataInput.addEventListener('change', atualizarHorarios);
+    dataInput.addEventListener('input', atualizarHorarios);
+}
     
     // Submit do formulário
     if (form) {
@@ -322,7 +323,7 @@ function abrirModal(servicoPreSelecionado = null) {
     
     // Reseta o formulário
     resetarFormulario();
-    atualizarHorarios();
+    atualizarHorarios(); // garante que horários apareçam
     
     // Pré-seleciona serviço se fornecido
     if (servicoPreSelecionado) {
@@ -579,17 +580,20 @@ function gerarHorarios() {
 }
 
 function selecionarHorario(horario, btn) {
-    // Remove seleção anterior
+
     document.querySelectorAll('.horario-btn').forEach(b => {
         b.classList.remove('selecionado');
     });
-    
-    // Seleciona novo
+
     btn.classList.add('selecionado');
+
     const horarioInput = document.getElementById('horarioSelecionado');
+
     if (horarioInput) {
         horarioInput.value = horario;
     }
+
+    console.log("Horário selecionado:", horario);
 }
 
 function getAgendamentosPorData(data) {
