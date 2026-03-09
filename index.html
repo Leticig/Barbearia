@@ -40,15 +40,30 @@
                 <li><a href="#servicos" class="nav-link">Serviços</a></li>
                 <li><a href="#precos" class="nav-link">Preços</a></li>
                 <li><a href="#contato" class="nav-link">Contato</a></li>
+                <li><a href="#" class="nav-link" id="btnMeusAgendamentos"><i class="fas fa-calendar-alt"></i> Meus Agendamentos</a></li>
                 <li><a href="#barbeiro" class="nav-link nav-barbeiro"><i class="fas fa-user-tie"></i> Área do Barbeiro</a></li>
             </ul>
         </div>
     </nav>
 
+    <!-- 
+        IMAGENS - COLOQUE SUAS IMAGENS NA PASTA /images/
+        
+        Imagens necessárias:
+        - images/hero-bg.jpg (fundo do banner - recomendado: 1920x1080)
+        - images/sobre.jpg (foto da barbearia - recomendado: 600x700)
+        - images/servico-corte.jpg (Corte Simples - 400x300)
+        - images/servico-degrade.jpg (Degradê - 400x300)
+        - images/servico-corte-barba.jpg (Corte + Barba - 400x300)
+        - images/servico-barba.jpg (Barba Completa - 400x300)
+        - images/servico-sobrancelha.jpg (Sobrancelha - 400x300)
+        - images/servico-tratamento.jpg (Tratamento Capilar - 400x300)
+    -->
+
     <!-- ============================================
          HERO / BANNER
     ============================================ -->
-    <section class="hero" id="home">
+    <section class="hero" id="home" style="background-image: url('images/pexels-orlovamaria-4969838.jpg');">
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <div class="hero-badge">
@@ -93,7 +108,7 @@
             <div class="sobre-grid">
                 <div class="sobre-image">
                     <div class="image-frame">
-                        <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=600&h=700&fit=crop" alt="Interior da Barbearia Império Barber">
+                        <img src="images/pexels-pavel-danilyuk-7518700.jpg" alt="Interior da Barbearia Império Barber">
                         <div class="experience-badge">
                             <span class="exp-number">10+</span>
                             <span class="exp-text">Anos de<br>Experiência</span>
@@ -159,7 +174,7 @@
                 <!-- Corte Simples -->
                 <div class="servico-card" data-servico="corte-simples">
                     <div class="servico-image">
-                        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&h=300&fit=crop" alt="Corte Simples">
+                        <img src="images/pexels-rdne-7697366.jpg" alt="Corte Simples">
                         <div class="servico-overlay">
                             <button class="btn-agendar-servico" data-servico="corte-simples">
                                 <i class="fas fa-calendar-plus"></i> Agendar
@@ -182,7 +197,7 @@
                 <!-- Degradê -->
                 <div class="servico-card" data-servico="degrade">
                     <div class="servico-image">
-                        <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=400&h=300&fit=crop" alt="Degradê">
+                        <img src="images/pexels-maksgelatin-4351728.jpg" alt="Degradê">
                         <div class="servico-overlay">
                             <button class="btn-agendar-servico" data-servico="degrade">
                                 <i class="fas fa-calendar-plus"></i> Agendar
@@ -205,7 +220,7 @@
                 <!-- Corte + Barba -->
                 <div class="servico-card" data-servico="corte-barba">
                     <div class="servico-image">
-                        <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&h=300&fit=crop" alt="Corte + Barba">
+                        <img src="images/pexels-dudumatik-3916361.jpg" alt="Corte + Barba">
                         <div class="servico-overlay">
                             <button class="btn-agendar-servico" data-servico="corte-barba">
                                 <i class="fas fa-calendar-plus"></i> Agendar
@@ -228,7 +243,7 @@
                 <!-- Barba Completa -->
                 <div class="servico-card" data-servico="barba">
                     <div class="servico-image">
-                        <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=400&h=300&fit=crop" alt="Barba Completa">
+                        <img src="images/pexels-cottonbro-3998425.jpg" alt="Barba Completa">
                         <div class="servico-overlay">
                             <button class="btn-agendar-servico" data-servico="barba">
                                 <i class="fas fa-calendar-plus"></i> Agendar
@@ -251,7 +266,7 @@
                 <!-- Sobrancelha -->
                 <div class="servico-card" data-servico="sobrancelha">
                     <div class="servico-image">
-                        <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=400&h=300&fit=crop" alt="Sobrancelha">
+                        <img src="images/pexels-samerdaboul-1319428.jpg" alt="Sobrancelha">
                         <div class="servico-overlay">
                             <button class="btn-agendar-servico" data-servico="sobrancelha">
                                 <i class="fas fa-calendar-plus"></i> Agendar
@@ -274,7 +289,7 @@
                 <!-- Tratamento Capilar -->
                 <div class="servico-card" data-servico="tratamento">
                     <div class="servico-image">
-                        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=300&fit=crop" alt="Tratamento Capilar">
+                        <img src="images/pexels-maksgelatin-4663133.jpg" alt="Tratamento Capilar">
                         <div class="servico-overlay">
                             <button class="btn-agendar-servico" data-servico="tratamento">
                                 <i class="fas fa-calendar-plus"></i> Agendar
@@ -592,6 +607,16 @@
                         <span class="resumo-valor concluido" id="totalConcluidos">0</span>
                     </div>
                 </div>
+                
+                <!-- Botão Limpar Todos -->
+                <div class="painel-limpar">
+                    <button class="btn btn-danger btn-sm" id="btnLimparConcluidos">
+                        <i class="fas fa-trash-alt"></i> Limpar Agendamentos Concluídos
+                    </button>
+                    <button class="btn btn-outline btn-sm" id="btnLimparTodos">
+                        <i class="fas fa-exclamation-triangle"></i> Limpar Todos
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -661,7 +686,7 @@
     </a>
 
     <!-- ============================================
-         MODAL DE AGENDAMENTO
+         MODAL DE AGENDAMENTO - COM SCROLL CORRIGIDO
     ============================================ -->
     <div class="modal" id="modalAgendamento">
         <div class="modal-overlay"></div>
@@ -675,155 +700,181 @@
                 <p>Preencha os dados abaixo para reservar seu atendimento</p>
             </div>
             
-            <form class="agendamento-form" id="agendamentoForm">
-                <!-- Passo 1: Dados Pessoais -->
-                <div class="form-step active" data-step="1">
-                    <h3 class="step-title">Dados Pessoais</h3>
-                    
-                    <div class="form-group">
-                        <label for="nomeCliente">Nome Completo *</label>
-                        <input type="text" id="nomeCliente" name="nome" required placeholder="Digite seu nome completo">
-                    </div>
-                    
-                    <div class="form-row">
+            <!-- Container com scroll para o formulário -->
+            <div class="modal-scroll-container">
+                <form class="agendamento-form" id="agendamentoForm">
+                    <!-- Passo 1: Dados Pessoais -->
+                    <div class="form-step active" data-step="1">
+                        <h3 class="step-title">Dados Pessoais</h3>
+                        
                         <div class="form-group">
-                            <label for="telefoneCliente">Telefone *</label>
-                            <input type="tel" id="telefoneCliente" name="telefone" required placeholder="(11) 99999-9999" maxlength="15">
+                            <label for="nomeCliente">Nome Completo *</label>
+                            <input type="text" id="nomeCliente" name="nome" required placeholder="Digite seu nome completo">
                         </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="telefoneCliente">Telefone *</label>
+                                <input type="tel" id="telefoneCliente" name="telefone" required placeholder="(11) 99999-9999" maxlength="15">
+                            </div>
+                            <div class="form-group">
+                                <label for="emailCliente">E-mail</label>
+                                <input type="email" id="emailCliente" name="email" placeholder="seu@email.com">
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-primary btn-next" data-next="2">
+                                Próximo <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Passo 2: Escolha do Serviço -->
+                    <div class="form-step" data-step="2">
+                        <h3 class="step-title">Escolha o Serviço</h3>
+                        
                         <div class="form-group">
-                            <label for="emailCliente">E-mail</label>
-                            <input type="email" id="emailCliente" name="email" placeholder="seu@email.com">
+                            <label for="servicoSelecionado">Serviço *</label>
+                            <select id="servicoSelecionado" name="servico" required>
+                                <option value="">Selecione um serviço</option>
+                                <option value="corte-simples" data-preco="35.00" data-tempo="30">Corte Simples - R$ 35,00 (30min)</option>
+                                <option value="degrade" data-preco="45.00" data-tempo="45">Degradê - R$ 45,00 (45min)</option>
+                                <option value="corte-barba" data-preco="70.00" data-tempo="60">Corte + Barba - R$ 70,00 (60min)</option>
+                                <option value="barba" data-preco="40.00" data-tempo="30">Barba Completa - R$ 40,00 (30min)</option>
+                                <option value="sobrancelha" data-preco="15.00" data-tempo="15">Sobrancelha - R$ 15,00 (15min)</option>
+                                <option value="tratamento" data-preco="50.00" data-tempo="45">Tratamento Capilar - R$ 50,00 (45min)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="preco-preview" id="precoPreview" style="display: none;">
+                            <div class="preco-info">
+                                <span class="preco-label">Valor:</span>
+                                <span class="preco-valor" id="precoValor">R$ 0,00</span>
+                            </div>
+                            <div class="tempo-info">
+                                <span class="tempo-label">Duração:</span>
+                                <span class="tempo-valor" id="tempoValor">0 min</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline btn-prev" data-prev="1">
+                                <i class="fas fa-arrow-left"></i> Voltar
+                            </button>
+                            <button type="button" class="btn btn-primary btn-next" data-next="3">
+                                Próximo <i class="fas fa-arrow-right"></i>
+                            </button>
                         </div>
                     </div>
                     
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-primary btn-next" data-next="2">
-                            Próximo <i class="fas fa-arrow-right"></i>
-                        </button>
+                    <!-- Passo 3: Data e Horário -->
+                    <div class="form-step" data-step="3">
+                        <h3 class="step-title">Escolha Data e Horário</h3>
+                        
+                        <div class="form-group">
+                            <label for="dataAgendamento">Data *</label>
+                            <input type="date" id="dataAgendamento" name="data" required min="">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Horários Disponíveis *</label>
+                            <div class="horarios-grid" id="horariosGrid">
+                                <!-- Preenchido via JavaScript -->
+                            </div>
+                            <input type="hidden" id="horarioSelecionado" name="horario" required>
+                        </div>
+                        
+                        <div class="legenda-horarios">
+                            <div class="legenda-item">
+                                <span class="legenda-box disponivel"></span>
+                                <span>Disponível</span>
+                            </div>
+                            <div class="legenda-item">
+                                <span class="legenda-box ocupado"></span>
+                                <span>Ocupado</span>
+                            </div>
+                            <div class="legenda-item">
+                                <span class="legenda-box selecionado"></span>
+                                <span>Selecionado</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline btn-prev" data-prev="2">
+                                <i class="fas fa-arrow-left"></i> Voltar
+                            </button>
+                            <button type="button" class="btn btn-primary btn-next" data-next="4">
+                                Próximo <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
                     </div>
+                    
+                    <!-- Passo 4: Confirmação -->
+                    <div class="form-step" data-step="4">
+                        <h3 class="step-title">Confirme seu Agendamento</h3>
+                        
+                        <div class="resumo-agendamento" id="resumoAgendamento">
+                            <div class="resumo-item">
+                                <span class="resumo-label">Nome:</span>
+                                <span class="resumo-valor" id="resumoNome"></span>
+                            </div>
+                            <div class="resumo-item">
+                                <span class="resumo-label">Telefone:</span>
+                                <span class="resumo-valor" id="resumoTelefone"></span>
+                            </div>
+                            <div class="resumo-item">
+                                <span class="resumo-label">Serviço:</span>
+                                <span class="resumo-valor" id="resumoServico"></span>
+                            </div>
+                            <div class="resumo-item">
+                                <span class="resumo-label">Data:</span>
+                                <span class="resumo-valor" id="resumoData"></span>
+                            </div>
+                            <div class="resumo-item">
+                                <span class="resumo-label">Horário:</span>
+                                <span class="resumo-valor" id="resumoHorario"></span>
+                            </div>
+                            <div class="resumo-item destaque">
+                                <span class="resumo-label">Valor Total:</span>
+                                <span class="resumo-valor" id="resumoValor"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline btn-prev" data-prev="3">
+                                <i class="fas fa-arrow-left"></i> Voltar
+                            </button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check"></i> Confirmar Agendamento
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         MODAL - MEUS AGENDAMENTOS (CLIENTE)
+    ============================================ -->
+    <div class="modal" id="modalMeusAgendamentos">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-lg">
+            <button class="modal-close" id="modalCloseMeus" aria-label="Fechar">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-header">
+                <h2><i class="fas fa-calendar-alt"></i> Meus Agendamentos</h2>
+                <p>Visualize seus agendamentos realizados</p>
+            </div>
+            
+            <div class="modal-scroll-container">
+                <div class="meus-agendamentos-content" id="meusAgendamentosContent">
+                    <!-- Preenchido via JavaScript -->
                 </div>
-                
-                <!-- Passo 2: Escolha do Serviço -->
-                <div class="form-step" data-step="2">
-                    <h3 class="step-title">Escolha o Serviço</h3>
-                    
-                    <div class="form-group">
-                        <label for="servicoSelecionado">Serviço *</label>
-                        <select id="servicoSelecionado" name="servico" required>
-                            <option value="">Selecione um serviço</option>
-                            <option value="corte-simples" data-preco="35.00" data-tempo="30">Corte Simples - R$ 35,00 (30min)</option>
-                            <option value="degrade" data-preco="45.00" data-tempo="45">Degradê - R$ 45,00 (45min)</option>
-                            <option value="corte-barba" data-preco="70.00" data-tempo="60">Corte + Barba - R$ 70,00 (60min)</option>
-                            <option value="barba" data-preco="40.00" data-tempo="30">Barba Completa - R$ 40,00 (30min)</option>
-                            <option value="sobrancelha" data-preco="15.00" data-tempo="15">Sobrancelha - R$ 15,00 (15min)</option>
-                            <option value="tratamento" data-preco="50.00" data-tempo="45">Tratamento Capilar - R$ 50,00 (45min)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="preco-preview" id="precoPreview" style="display: none;">
-                        <div class="preco-info">
-                            <span class="preco-label">Valor:</span>
-                            <span class="preco-valor" id="precoValor">R$ 0,00</span>
-                        </div>
-                        <div class="tempo-info">
-                            <span class="tempo-label">Duração:</span>
-                            <span class="tempo-valor" id="tempoValor">0 min</span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-outline btn-prev" data-prev="1">
-                            <i class="fas fa-arrow-left"></i> Voltar
-                        </button>
-                        <button type="button" class="btn btn-primary btn-next" data-next="3">
-                            Próximo <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Passo 3: Data e Horário -->
-                <div class="form-step" data-step="3">
-                    <h3 class="step-title">Escolha Data e Horário</h3>
-                    
-                    <div class="form-group">
-                        <label for="dataAgendamento">Data *</label>
-                        <input type="date" id="dataAgendamento" name="data" required min="">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Horários Disponíveis *</label>
-                        <div class="horarios-grid" id="horariosGrid">
-                            <!-- Preenchido via JavaScript -->
-                        </div>
-                        <input type="hidden" id="horarioSelecionado" name="horario" required>
-                    </div>
-                    
-                    <div class="legenda-horarios">
-                        <div class="legenda-item">
-                            <span class="legenda-box disponivel"></span>
-                            <span>Disponível</span>
-                        </div>
-                        <div class="legenda-item">
-                            <span class="legenda-box ocupado"></span>
-                            <span>Ocupado</span>
-                        </div>
-                        <div class="legenda-item">
-                            <span class="legenda-box selecionado"></span>
-                            <span>Selecionado</span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-outline btn-prev" data-prev="2">
-                            <i class="fas fa-arrow-left"></i> Voltar
-                        </button>
-                        <button type="button" class="btn btn-primary btn-next" data-next="4">
-                            Próximo <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Passo 4: Confirmação -->
-                <div class="form-step" data-step="4">
-                    <h3 class="step-title">Confirme seu Agendamento</h3>
-                    
-                    <div class="resumo-agendamento" id="resumoAgendamento">
-                        <div class="resumo-item">
-                            <span class="resumo-label">Nome:</span>
-                            <span class="resumo-valor" id="resumoNome"></span>
-                        </div>
-                        <div class="resumo-item">
-                            <span class="resumo-label">Telefone:</span>
-                            <span class="resumo-valor" id="resumoTelefone"></span>
-                        </div>
-                        <div class="resumo-item">
-                            <span class="resumo-label">Serviço:</span>
-                            <span class="resumo-valor" id="resumoServico"></span>
-                        </div>
-                        <div class="resumo-item">
-                            <span class="resumo-label">Data:</span>
-                            <span class="resumo-valor" id="resumoData"></span>
-                        </div>
-                        <div class="resumo-item">
-                            <span class="resumo-label">Horário:</span>
-                            <span class="resumo-valor" id="resumoHorario"></span>
-                        </div>
-                        <div class="resumo-item destaque">
-                            <span class="resumo-label">Valor Total:</span>
-                            <span class="resumo-valor" id="resumoValor"></span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-outline btn-prev" data-prev="3">
-                            <i class="fas fa-arrow-left"></i> Voltar
-                        </button>
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-check"></i> Confirmar Agendamento
-                        </button>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -835,7 +886,6 @@
     <!-- ============================================
          JAVASCRIPT
     ============================================ -->
-    <!-- atualização -->
     <script src="script.js"></script>
 </body>
 </html>
